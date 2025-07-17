@@ -11,6 +11,7 @@ import FooterSection from './components/FooterSection';
 import ScheduleVisitPage from './components/ScheduleVisitPage';
 import EmailTestPanel from './components/EmailTestPanel';
 import AdminPanel from './components/AdminPanel';
+import ElectricalWorkPage from './components/ElectricalWorkPage';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
       <Routes>
         <Route path="/admin" element={<AdminPanel />} />
         <Route path="/schedule-visit" element={<ScheduleVisitPage />} />
+        <Route path="/electrical-work" element={<ElectricalWorkPage />} />
         <Route path="/test-email" element={
           <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center p-4">
             <EmailTestPanel />
