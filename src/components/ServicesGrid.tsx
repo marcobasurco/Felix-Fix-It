@@ -113,20 +113,27 @@ const ServicesGrid = () => {
                 {service.features.map((feature, featureIndex) => (
                   <li key={featureIndex} className="flex items-center text-sm text-gray-700">
                     <CheckCircle className={`h-4 w-4 ${service.iconColor} mr-3 flex-shrink-0`} />
-              {service.title === 'Electrical Work' ? (
-                <Link 
-                  to="/electrical-work"
-                  className="text-blue-600 font-semibold hover:text-blue-700 transition-colors duration-200 flex items-center"
-                >
-                  Learn More
-                  <ArrowUpRight className="h-4 w-4 ml-1" />
-                </Link>
-              ) : (
-                <button className="text-blue-600 font-semibold hover:text-blue-700 transition-colors duration-200 flex items-center">
-                  Learn More
-                  <ArrowUpRight className="h-4 w-4 ml-1" />
-                </button>
-              )}
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-6">
+                {service.title === 'Electrical Work' ? (
+                  <Link 
+                    to="/electrical-work"
+                    className="text-blue-600 font-semibold hover:text-blue-700 transition-colors duration-200 flex items-center"
+                  >
+                    Learn More
+                    <ArrowUpRight className="h-4 w-4 ml-1" />
+                  </Link>
+                ) : (
+                  <button className="text-blue-600 font-semibold hover:text-blue-700 transition-colors duration-200 flex items-center">
+                    Learn More
+                    <ArrowUpRight className="h-4 w-4 ml-1" />
+                  </button>
+                )}
+              </div>
             </div>
           ))}
         </div>
