@@ -12,6 +12,11 @@ import ScheduleVisitPage from './components/ScheduleVisitPage';
 import EmailTestPanel from './components/EmailTestPanel';
 import AdminPanel from './components/AdminPanel';
 import ElectricalWorkPage from './components/ElectricalWorkPage';
+import PlumbingServicesPage from './components/PlumbingServicesPage';
+import PaintingDrywallPage from './components/PaintingDrywallPage';
+import CarpentryPage from './components/CarpentryPage';
+import HomeMaintenancePage from './components/HomeMaintenancePage';
+import ApplianceInstallationPage from './components/ApplianceInstallationPage';
 
 function App() {
   return (
@@ -20,6 +25,11 @@ function App() {
         <Route path="/admin" element={<AdminPanel />} />
         <Route path="/schedule-visit" element={<ScheduleVisitPage />} />
         <Route path="/electrical-work" element={<ElectricalWorkPage />} />
+        <Route path="/plumbing-services" element={<PlumbingServicesPage />} />
+        <Route path="/painting-drywall" element={<PaintingDrywallPage />} />
+        <Route path="/carpentry" element={<CarpentryPage />} />
+        <Route path="/home-maintenance" element={<HomeMaintenancePage />} />
+        <Route path="/appliance-installation" element={<ApplianceInstallationPage />} />
         <Route path="/test-email" element={
           <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center p-4">
             <EmailTestPanel />

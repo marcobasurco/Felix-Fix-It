@@ -29,7 +29,8 @@ const ServicesGrid = () => {
       features: ['Leak Repairs', 'Faucet Installation', 'Toilet Repairs', 'Drain Cleaning'],
       color: 'from-blue-400 to-cyan-500',
       bgColor: 'bg-blue-50',
-      iconColor: 'text-blue-600'
+      iconColor: 'text-blue-600',
+      link: '/plumbing-services'
     },
     {
       icon: Paintbrush,
@@ -38,7 +39,8 @@ const ServicesGrid = () => {
       features: ['Interior Painting', 'Drywall Repair', 'Wall Texturing', 'Color Matching'],
       color: 'from-purple-400 to-pink-500',
       bgColor: 'bg-purple-50',
-      iconColor: 'text-purple-600'
+      iconColor: 'text-purple-600',
+      link: '/painting-drywall'
     },
     {
       icon: Hammer,
@@ -47,7 +49,8 @@ const ServicesGrid = () => {
       features: ['Custom Shelving', 'Cabinet Install', 'Trim Work', 'Furniture Assembly'],
       color: 'from-amber-400 to-orange-600',
       bgColor: 'bg-amber-50',
-      iconColor: 'text-amber-600'
+      iconColor: 'text-amber-600',
+      link: '/carpentry'
     },
     {
       icon: Home,
@@ -56,7 +59,8 @@ const ServicesGrid = () => {
       features: ['Seasonal Checks', 'Preventive Care', 'Safety Inspections', 'Weatherization'],
       color: 'from-green-400 to-emerald-500',
       bgColor: 'bg-green-50',
-      iconColor: 'text-green-600'
+      iconColor: 'text-green-600',
+      link: '/home-maintenance'
     },
     {
       icon: Settings,
@@ -65,7 +69,8 @@ const ServicesGrid = () => {
       features: ['Dishwasher Setup', 'TV Mounting', 'Smart Home', 'Garbage Disposal'],
       color: 'from-gray-400 to-slate-600',
       bgColor: 'bg-gray-50',
-      iconColor: 'text-gray-600'
+      iconColor: 'text-gray-600',
+      link: '/appliance-installation'
     }
   ];
 
@@ -119,20 +124,13 @@ const ServicesGrid = () => {
               </ul>
 
               <div className="mt-6">
-                {service.title === 'Electrical Work' ? (
-                  <Link 
-                    to="/electrical-work"
-                    className="text-blue-600 font-semibold hover:text-blue-700 transition-colors duration-200 flex items-center"
-                  >
-                    Learn More
-                    <ArrowUpRight className="h-4 w-4 ml-1" />
-                  </Link>
-                ) : (
-                  <button className="text-blue-600 font-semibold hover:text-blue-700 transition-colors duration-200 flex items-center">
-                    Learn More
-                    <ArrowUpRight className="h-4 w-4 ml-1" />
-                  </button>
-                )}
+                <Link 
+                  to={service.link || '#'}
+                  className="text-blue-600 font-semibold hover:text-blue-700 transition-colors duration-200 flex items-center"
+                >
+                  Learn More
+                  <ArrowUpRight className="h-4 w-4 ml-1" />
+                </Link>
               </div>
             </div>
           ))}
