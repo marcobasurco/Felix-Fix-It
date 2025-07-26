@@ -19,6 +19,19 @@ const EmailTestPanel = () => {
       return;
     }
 
+    // Check if environment variables are configured
+    if (!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_ANON_KEY) {
+      setResult({
+        success: false,
+        message: 'Supabase environment variables are not configured. Please check your .env file.',
+        details: {
+          VITE_SUPABASE_URL: import.meta.env.VITE_SUPABASE_URL ? 'Configured' : 'Missing',
+          VITE_SUPABASE_ANON_KEY: import.meta.env.VITE_SUPABASE_ANON_KEY ? 'Configured' : 'Missing'
+        }
+      });
+      return;
+    }
+
     setIsLoading(true);
     setResult(null);
 
