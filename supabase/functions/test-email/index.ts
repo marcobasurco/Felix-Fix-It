@@ -11,6 +11,15 @@ interface EmailTestRequest {
   testType: 'customer' | 'admin' | 'both';
 }
 
+// Get EmailJS configuration from environment variables
+const getEmailJSConfig = () => {
+  return {
+    serviceId: Deno.env.get('EMAILJS_SERVICE_ID') || 'service_lwtefri',
+    templateId: Deno.env.get('EMAILJS_TEMPLATE_ID') || 'template_lce7tmj',
+    publicKey: Deno.env.get('EMAILJS_PUBLIC_KEY') || 'uqoJsBTE-mMfZibSV'
+  };
+};
+
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -40,12 +49,8 @@ serve(async (req) => {
       )
     }
 
-    // EmailJS configuration
-    const EMAILJS_CONFIG = {
-      serviceId: 'service_lwtefri',
-      templateId: 'template_lce7tmj',
-      publicKey: 'uqoJsBTE-mMfZibSV'
-    }
+    // Get EmailJS configuration
+    const EMAILJS_CONFIG = getEmailJSConfig();
 
     // Test email data
     const testData = {

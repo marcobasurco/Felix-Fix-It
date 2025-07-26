@@ -14,11 +14,11 @@ interface EmailData {
   projectDescription: string;
 }
 
-// EmailJS configuration
+// EmailJS configuration from environment variables
 const EMAILJS_CONFIG = {
-  serviceId: 'service_lwtefri',
-  templateId: 'template_lce7tmj',
-  publicKey: 'uqoJsBTE-mMfZibSV'
+  serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_lwtefri',
+  templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_lce7tmj',
+  publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'uqoJsBTE-mMfZibSV'
 };
 
 // Initialize EmailJS
