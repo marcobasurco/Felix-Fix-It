@@ -9,7 +9,6 @@ import ReviewsSection from './components/ReviewsSection';
 import ContactSection from './components/ContactSection';
 import FooterSection from './components/FooterSection';
 import ScheduleVisitPage from './components/ScheduleVisitPage';
-import EmailTestPanel from './components/EmailTestPanel';
 import AdminPanel from './components/AdminPanel';
 import ElectricalWorkPage from './components/ElectricalWorkPage';
 import PlumbingServicesPage from './components/PlumbingServicesPage';
@@ -30,11 +29,6 @@ function App() {
         <Route path="/carpentry" element={<CarpentryPage />} />
         <Route path="/home-maintenance" element={<HomeMaintenancePage />} />
         <Route path="/appliance-installation" element={<ApplianceInstallationPage />} />
-        <Route path="/test-email" element={
-          <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center p-4">
-            <EmailTestPanel />
-          </div>
-        } />
         <Route path="/" element={
           <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
             <Navigation />

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Calendar, Clock, User, Phone, Mail, MapPin, Wrench, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { saveFormSubmission, getFormSubmissions } from '../utils/storage';
-import { sendSchedulingAcknowledgment, sendAdminNotification } from '../utils/emailService';
 
 const ScheduleVisitPage = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -210,12 +209,6 @@ const ScheduleVisitPage = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate email field before proceeding
-    if (!formData.email || formData.email.trim() === '') {
-      alert('Please enter a valid email address before submitting.');
-      return;
-    }
-    
     try {
       const submission = saveFormSubmission({
         ...formData,
@@ -223,52 +216,6 @@ const ScheduleVisitPage = () => {
       });
       
       console.log('Scheduling request submitted:', submission);
-      
-      // Send acknowledgment email to customer and admin notification
-      const emailPromises = [
-        sendSchedulingAcknowledgment({
-          customerName: formData.name,
-          customerEmail: formData.email,
-          customerPhone: formData.phone,
-          serviceAddress: formData.streetAddress,
-          city: formData.city,
-          state: formData.stateProvince,
-          zipCode: formData.zipCode,
-          service: formData.service,
-          scheduledDate: selectedDate,
-          scheduledTime: selectedTime,
-          projectDescription: formData.message
-        }),
-        sendAdminNotification({
-          customerName: formData.name,
-          customerEmail: formData.email,
-          customerPhone: formData.phone,
-          serviceAddress: formData.streetAddress,
-          city: formData.city,
-          state: formData.stateProvince,
-          zipCode: formData.zipCode,
-          service: formData.service,
-          scheduledDate: selectedDate,
-          scheduledTime: selectedTime,
-          projectDescription: formData.message
-        })
-      ];
-      
-      Promise.all(emailPromises).then(([customerEmailSent, adminEmailSent]) => {
-        if (customerEmailSent) {
-          console.log('Customer acknowledgment email sent successfully');
-        } else {
-          console.log('Failed to send customer acknowledgment email');
-        }
-        
-        if (adminEmailSent) {
-          console.log('Admin notification email sent successfully');
-        } else {
-          console.log('Failed to send admin notification email');
-        }
-      }).catch(error => {
-        console.error('Error sending emails:', error);
-      });
       
       setCurrentStep(4); // Success step
     } catch (error) {
