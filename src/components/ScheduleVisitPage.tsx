@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Calendar, Clock, User, Phone, Mail, MapPin, Wrench, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { saveFormSubmission, getFormSubmissions } from '../utils/storage';
+import { sendCustomerAcknowledgment, sendAdminNotification } from '../utils/emailService';
 
 const ScheduleVisitPage = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -217,10 +218,51 @@ const ScheduleVisitPage = () => {
       
       console.log('Scheduling request submitted:', submission);
       
-      setCurrentStep(4); // Success step
+      // Send emails after successful form submission
+      handleEmailNotifications();
+      
     } catch (error) {
       console.error('Error submitting scheduling request:', error);
       alert('There was an error submitting your request. Please try again or call us directly.');
+    }
+  };
+
+  const handleEmailNotifications = async () => {
+    console.log('Starting email notification process for scheduling request...');
+    
+    const customerData = {
+      name: formData.name,
+      email: formData.email,
+      service: formData.service || 'General service request',
+      message: formData.message,
+      phone: formData.phone,
+      address: `${formData.streetAddress}, ${formData.city}, ${formData.stateProvince} ${formData.zipCode}`,
+      urgency: formData.urgency,
+      preferredDate: selectedDateDisplay,
+      preferredTime: new Date(`2000-01-01T${selectedTime}`).toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      })
+    };
+    
+    try {
+      console.log('Sending customer acknowledgment email...');
+      await sendCustomerAcknowledgment(customerData);
+      console.log('✅ Customer acknowledgment email sent successfully');
+      
+      console.log('Sending admin notification email...');
+      await sendAdminNotification(customerData);
+      console.log('✅ Admin notification email sent successfully');
+      
+      console.log('✅ All emails sent successfully for scheduling request');
+      setCurrentStep(4); // Success step
+      
+    } catch (error) {
+      console.error('❌ Error sending emails for scheduling request:', error);
+      // Still show success to user, but log the email error
+      setCurrentStep(4);
+      // You might want to show a different message or handle this differently
     }
   };
 

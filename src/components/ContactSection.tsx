@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Phone, Mail, MapPin, Clock, Send, MessageCircle, Calendar } from 'lucide-react';
 import { saveFormSubmission } from '../utils/storage';
+import { sendCustomerAcknowledgment, sendAdminNotification } from '../utils/emailService';
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
@@ -35,13 +36,52 @@ const ContactSection = () => {
       });
       
       console.log('Form submitted:', submission);
-      alert('Thank you for your message! We\'ll get back to you within 2 hours.');
+      
+      // Send emails after successful form submission
+      handleEmailNotifications();
+      
     } catch (error) {
       console.error('Error saving form submission:', error);
       alert('There was an error submitting your form. Please try again or call us directly.');
     }
+  };
+
+  const handleEmailNotifications = async () => {
+    console.log('Starting email notification process for quote request...');
     
-    setFormData({ name: '', email: '', phone: '', streetAddress: '', city: '', stateProvince: '', zipCode: '', service: '', urgency: '', message: '' });
+    const customerData = {
+      name: formData.name,
+      email: formData.email,
+      service: formData.service || 'General quote request',
+      message: formData.message,
+      phone: formData.phone,
+      address: `${formData.streetAddress}, ${formData.city}, ${formData.stateProvince} ${formData.zipCode}`,
+      urgency: formData.urgency
+    };
+    
+    try {
+      console.log('Sending customer acknowledgment email for quote request...');
+      await sendCustomerAcknowledgment(customerData);
+      console.log('✅ Customer acknowledgment email sent successfully');
+      
+      console.log('Sending admin notification email for quote request...');
+      await sendAdminNotification(customerData);
+      console.log('✅ Admin notification email sent successfully');
+      
+      console.log('✅ All emails sent successfully for quote request');
+      alert('Thank you for your message! We\'ve sent a confirmation email and will get back to you within 2 hours.');
+      
+      // Clear form after successful submission and email sending
+      setFormData({ name: '', email: '', phone: '', streetAddress: '', city: '', stateProvince: '', zipCode: '', service: '', urgency: '', message: '' });
+      
+    } catch (error) {
+      console.error('❌ Error sending emails for quote request:', error);
+      // Still show success to user, but mention email issue
+      alert('Thank you for your message! We\'ve received your request and will get back to you within 2 hours. (Note: There was an issue sending the confirmation email, but your request was saved successfully.)');
+      
+      // Clear form even if email failed
+      setFormData({ name: '', email: '', phone: '', streetAddress: '', city: '', stateProvince: '', zipCode: '', service: '', urgency: '', message: '' });
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
