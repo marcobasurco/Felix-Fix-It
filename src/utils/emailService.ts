@@ -83,7 +83,8 @@ export const sendCustomerAcknowledgment = async (customerData: {
 }) => {
   console.log('EmailJS: Preparing customer acknowledgment email...');
   
-  const templateParams = {
+  // Initialize templateParams with common fields
+  const templateParams: Record<string, unknown> = {
     to_name: customerData.name,
     to_email: customerData.email,
     from_name: 'Felix Fix-It',
@@ -93,10 +94,16 @@ export const sendCustomerAcknowledgment = async (customerData: {
     phone_number: customerData.phone,
     address: customerData.address,
     urgency: customerData.urgency || 'Not specified',
-    preferred_date: customerData.preferredDate || 'Not specified',
-    preferred_time: customerData.preferredTime || 'Not specified',
     reply_to: 'felix@felixfixit.com'
   };
+  
+  // Conditionally add preferredDate and preferredTime if they exist
+  if (customerData.preferredDate) {
+    templateParams.preferred_date = customerData.preferredDate;
+  }
+  if (customerData.preferredTime) {
+    templateParams.preferred_time = customerData.preferredTime;
+  }
   
   console.log('EmailJS: Customer acknowledgment template prepared');
   return await sendEmail(templateParams);
@@ -115,7 +122,8 @@ export const sendAdminNotification = async (submissionData: {
 }) => {
   console.log('EmailJS: Preparing admin notification email...');
   
-  const templateParams = {
+  // Initialize templateParams with common fields
+  const templateParams: Record<string, unknown> = {
     to_name: 'Felix',
     to_email: 'felix@felixfixit.com', // Admin email
     from_name: submissionData.name,
@@ -126,10 +134,16 @@ export const sendAdminNotification = async (submissionData: {
     urgency: submissionData.urgency || 'Not specified',
     message: submissionData.message,
     address: submissionData.address,
-    preferred_date: submissionData.preferredDate || 'Not specified',
-    preferred_time: submissionData.preferredTime || 'Not specified',
     reply_to: submissionData.email
   };
+  
+  // Conditionally add preferredDate and preferredTime if they exist
+  if (submissionData.preferredDate) {
+    templateParams.preferred_date = submissionData.preferredDate;
+  }
+  if (submissionData.preferredTime) {
+    templateParams.preferred_time = submissionData.preferredTime;
+  }
   
   console.log('EmailJS: Admin notification template prepared');
   return await sendEmail(templateParams);
