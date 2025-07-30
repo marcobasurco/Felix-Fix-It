@@ -167,7 +167,7 @@ const ContactSection = () => {
           <div className="lg:col-span-5">
             <div className="space-y-6 mb-12">
               {contactMethods.map((method, index) => (
-                {method.action.startsWith('#') ? (
+                method.action.startsWith('#') ? (
                   <Link
                     key={index}
                     to="/schedule-visit"
@@ -201,24 +201,7 @@ const ContactSection = () => {
                       </div>
                     </div>
                   </a>
-                )}
-              ))}
-            </div>
-                  key={index}
-                  href={method.action}
-                  className="block bg-gradient-to-r from-gray-50 to-blue-50 rounded-3xl p-6 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
-                >
-                  <div className="flex items-center space-x-4">
-                    <div className={`bg-gradient-to-r ${method.color} p-4 rounded-2xl shadow-lg`}>
-                      <method.icon className="h-6 w-6 text-white" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-xl font-bold text-gray-900 mb-1">{method.title}</h3>
-                      <p className="text-lg text-gray-700 mb-1">{method.info}</p>
-                      <p className="text-sm text-gray-500">{method.description}</p>
-                    </div>
-                  </div>
-                </a>
+                )
               ))}
             </div>
 
