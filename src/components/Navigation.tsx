@@ -62,8 +62,12 @@ const Navigation = () => {
             </div>
           </div>
 
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex items-center space-x-8">
+            {navItems.map((item) => (
+              <button
                 key={item.label}
-                onClick={() => scrollToSection(item.href)}
+                onClick={() => handleNavigation(item.href)}
                 className="text-gray-700 hover:text-orange-600 font-medium transition-colors duration-200 relative group"
               >
                 {item.label}
@@ -121,21 +125,7 @@ const Navigation = () => {
                 className="block w-full bg-gradient-to-r from-orange-500 to-red-500 text-white text-center py-3 px-4 rounded-lg font-semibold"
               >
                 Call {BUSINESS_INFO.phone}
-              item.href.startsWith('/') && !item.href.startsWith('/#') ? (
-            </div>
-                  key={item.label}
-                  onClick={() => scrollToSection(item.href)}
-                  className="block w-full text-left py-3 px-4 text-gray-700 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition-colors"
-                >
-                  {item.label}
-                </button>
-              ))}
-              <a
-                href="tel:650-315-1390"
-                className="block w-full bg-gradient-to-r from-orange-500 to-red-500 text-white text-center py-3 px-4 rounded-lg font-semibold"
-              >
-                Call (650) 315-1390
-              )
+              </a>
             </div>
           </div>
         )}
