@@ -1,0 +1,30 @@
+<p>You have received a new submission from the Felix Fix-It website.</p>
+
+<p><strong>Sender Info:</strong></p>
+<ul>
+  <li><strong>Name:</strong> {{from_name}}</li>
+  <li><strong>Email:</strong> {{from_email}}</li>
+  <li><strong>Phone:</strong> {{phone_number}}</li>
+</ul>
+
+<p><strong>Request Details:</strong></p>
+<ul>
+  <li><strong>Service Type:</strong> {{service_type}}</li>
+  <li><strong>Message:</strong> {{message}}</li>
+  <li><strong>Address:</strong> {{address}}</li>
+  <li><strong>Urgency:</strong> {{urgency}}</li>
+  {{#unless (eq preferred_date "Not specified")}}
+  <li><strong>Preferred Date:</strong> {{preferred_date}}</li>
+  <li><strong>Preferred Time:</strong> {{preferred_time}}</li>
+  {{/unless}}
+</ul>
+
+{{#unless (eq preferred_date "Not specified")}}
+<p><strong>⏰ SCHEDULING REQUEST:</strong> This customer has requested a specific appointment time. Please prioritize confirming their preferred date and time within 2 hours.</p>
+{{else}}
+<p><strong>💬 QUOTE REQUEST:</strong> This is a general inquiry. Please follow up within 2 hours with a quote and available scheduling options.</p>
+{{/unless}}
+
+<p>Please follow up with the customer as needed.</p>
+
+<p>— Felix Fix-It System</p>
