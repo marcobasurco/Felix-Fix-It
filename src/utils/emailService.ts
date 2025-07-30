@@ -1,12 +1,14 @@
 import emailjs from '@emailjs/browser';
 
 const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
 const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+const CUSTOMER_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_CUSTOMER_TEMPLATE_ID;
+const ADMIN_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_ADMIN_TEMPLATE_ID;
 
 console.log('EmailJS Environment Variables Check:');
 console.log('- SERVICE_ID:', SERVICE_ID ? '✓ Defined' : '✗ Missing');
-console.log('- TEMPLATE_ID:', TEMPLATE_ID ? '✓ Defined' : '✗ Missing');
+console.log('- CUSTOMER_TEMPLATE_ID:', CUSTOMER_TEMPLATE_ID ? '✓ Defined' : '✗ Missing');
+console.log('- ADMIN_TEMPLATE_ID:', ADMIN_TEMPLATE_ID ? '✓ Defined' : '✗ Missing');
 console.log('- PUBLIC_KEY:', PUBLIC_KEY ? '✓ Defined' : '✗ Missing');
 
 export const initEmailJs = () => {
@@ -28,20 +30,20 @@ export const initEmailJs = () => {
   }
 };
 
-export const sendEmail = async (templateParams: Record<string, unknown>) => {
+export const sendEmail = async (templateId: string, templateParams: Record<string, unknown>) => {
   console.log('EmailJS: Starting email send process...');
   
-  if (!SERVICE_ID || !TEMPLATE_ID) {
+  if (!SERVICE_ID || !templateId) {
     console.error('EmailJS: Missing required environment variables:');
     console.error('- SERVICE_ID:', SERVICE_ID ? '✓' : '✗ Missing');
-    console.error('- TEMPLATE_ID:', TEMPLATE_ID ? '✓' : '✗ Missing');
+    console.error('- TEMPLATE_ID (for this send):', templateId ? '✓' : '✗ Missing');
     console.error('EmailJS: Cannot send email without these values');
     throw new Error('EmailJS configuration incomplete');
   }
   
   console.log('EmailJS: Configuration check passed');
   console.log('EmailJS: Using SERVICE_ID:', SERVICE_ID);
-  console.log('EmailJS: Using TEMPLATE_ID:', TEMPLATE_ID);
+  console.log('EmailJS: Using TEMPLATE_ID:', templateId);
   console.log('EmailJS: Template parameters:', {
     ...templateParams,
     // Hide sensitive data in logs
@@ -51,7 +53,7 @@ export const sendEmail = async (templateParams: Record<string, unknown>) => {
   
   try {
     console.log('EmailJS: Sending email...');
-    const response = await emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams);
+    const response = await emailjs.send(SERVICE_ID, templateId, templateParams);
     console.log('EmailJS: ✅ Email sent successfully!');
     console.log('EmailJS: Response status:', response.status);
     console.log('EmailJS: Response text:', response.text);
@@ -106,7 +108,7 @@ export const sendCustomerAcknowledgment = async (customerData: {
   }
   
   console.log('EmailJS: Customer acknowledgment template prepared');
-  return await sendEmail(templateParams);
+  return await sendEmail(CUSTOMER_TEMPLATE_ID, templateParams);
 };
 
 export const sendAdminNotification = async (submissionData: {
@@ -146,7 +148,7 @@ export const sendAdminNotification = async (submissionData: {
   }
   
   console.log('EmailJS: Admin notification template prepared');
-  return await sendEmail(templateParams);
+  return await sendEmail(ADMIN_TEMPLATE_ID, templateParams);
 };
 
 // Initialize EmailJS when the module is loaded
