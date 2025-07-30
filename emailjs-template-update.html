@@ -1,0 +1,28 @@
+<p>Hi {{to_name}},</p>
+
+<p>Thank you for contacting <strong>Felix Fix-It</strong>! We've received your request and will be reaching out shortly.</p>
+
+<p><strong>Here's a summary of your request:</strong></p>
+
+<ul>
+  <li><strong>Service Type:</strong> {{service_type}}</li>
+  <li><strong>Message:</strong> {{message}}</li>
+  <li><strong>Phone:</strong> {{phone_number}}</li>
+  <li><strong>Address:</strong> {{address}}</li>
+  <li><strong>Urgency:</strong> {{urgency}}</li>
+  {{#unless (eq preferred_date "Not specified")}}
+  <li><strong>Preferred Date:</strong> {{preferred_date}}</li>
+  <li><strong>Preferred Time:</strong> {{preferred_time}}</li>
+  {{/unless}}
+</ul>
+
+{{#unless (eq preferred_date "Not specified")}}
+<p><strong>Scheduling Information:</strong><br>
+We'll contact you within 2 hours to confirm your preferred appointment time of {{preferred_time}} on {{preferred_date}}.</p>
+{{else}}
+<p>We'll contact you within 2 hours to discuss your project and schedule a convenient time for service.</p>
+{{/unless}}
+
+<p>We appreciate your interest and will follow up with you soon.</p>
+
+<p>— The Felix Fix-It Team</p>
