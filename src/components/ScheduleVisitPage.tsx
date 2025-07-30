@@ -176,12 +176,11 @@ const ScheduleVisitPage = () => {
     setSelectedDate(date);
     setSelectedDateDisplay(display);
     setSelectedTime('');
-    setFormData(prev => ({ ...prev, preferredDate: date, preferredTime: '' }));
+    // Clear selected time when date changes since available slots may be different
   };
 
   const handleTimeSelect = (time: string) => {
     setSelectedTime(time);
-    setFormData(prev => ({ ...prev, preferredTime: time }));
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -210,10 +209,20 @@ const ScheduleVisitPage = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Validate that date and time are selected
+    if (!selectedDate || !selectedTime) {
+      alert('Please select both a date and time for your appointment.');
+      return;
+    }
+    
     try {
       const submission = saveFormSubmission({
         ...formData,
-        message: `${formData.message}\n\nScheduled Visit Request:\nPreferred Date: ${new Date(selectedDate).toLocaleDateString()}\nPreferred Time: ${new Date(`2000-01-01T${selectedTime}`).toLocaleTimeString()}`
+        message: `${formData.message}\n\nScheduled Visit Request:\nPreferred Date: ${selectedDateDisplay}\nPreferred Time: ${new Date(`2000-01-01T${selectedTime}`).toLocaleTimeString('en-US', {
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true
+        })}`
       });
       
       console.log('Scheduling request submitted:', submission);
@@ -292,11 +301,11 @@ const ScheduleVisitPage = () => {
               {selectedDateDisplay}
             </p>
             <p className="font-semibold text-gray-900">
-              {new Date(`2000-01-01T${selectedTime}`).toLocaleTimeString('en-US', {
+              {selectedTime ? new Date(`2000-01-01T${selectedTime}`).toLocaleTimeString('en-US', {
                 hour: 'numeric',
                 minute: '2-digit',
                 hour12: true
-              })}
+              }) : 'Time not selected'}
             </p>
           </div>
           <Link
@@ -437,6 +446,13 @@ const ScheduleVisitPage = () => {
                   </button>
                 ))}
               </div>
+              
+              {timeSlots.length === 0 && (
+                <div className="text-center py-8 text-gray-500">
+                  <p>No available time slots for this date.</p>
+                  <p className="text-sm">Please select a different date.</p>
+                </div>
+              )}
 
               <div className="flex justify-between mt-8">
                 <button
@@ -641,11 +657,13 @@ const ScheduleVisitPage = () => {
                     </div>
                     <div className="flex items-center space-x-2">
                       <Clock className="h-4 w-4 text-orange-600" />
-                      <span>{new Date(`2000-01-01T${selectedTime}`).toLocaleTimeString('en-US', {
-                        hour: 'numeric',
-                        minute: '2-digit',
-                        hour12: true
-                      })}</span>
+                      <span>
+                        {selectedTime ? new Date(`2000-01-01T${selectedTime}`).toLocaleTimeString('en-US', {
+                          hour: 'numeric',
+                          minute: '2-digit',
+                          hour12: true
+                        }) : 'Please select a time'}
+                      </span>
                     </div>
                   </div>
                 </div>
