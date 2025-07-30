@@ -44,12 +44,7 @@ export const sendEmail = async (templateId: string, templateParams: Record<strin
   console.log('EmailJS: Configuration check passed');
   console.log('EmailJS: Using SERVICE_ID:', SERVICE_ID);
   console.log('EmailJS: Using TEMPLATE_ID:', templateId);
-  console.log('EmailJS: Template parameters:', {
-    ...templateParams,
-    // Hide sensitive data in logs
-    to_email: templateParams.to_email ? '[HIDDEN]' : undefined,
-    from_email: templateParams.from_email ? '[HIDDEN]' : undefined
-  });
+  console.log('EmailJS: Full template parameters:', templateParams);
   
   try {
     console.log('EmailJS: Sending email...');
@@ -68,6 +63,9 @@ export const sendEmail = async (templateId: string, templateParams: Record<strin
       console.error('EmailJS: Error stack:', error.stack);
     }
     
+    // Log the exact parameters that caused the error
+    console.error('EmailJS: Parameters that caused the error:', JSON.stringify(templateParams, null, 2));
+    
     throw error;
   }
 };
@@ -84,25 +82,25 @@ export const sendCustomerAcknowledgment = async (customerData: {
   preferredTime?: string;
 }) => {
   console.log('EmailJS: Preparing customer acknowledgment email...');
+  console.log('EmailJS: Customer data received:', customerData);
   
-  // Initialize templateParams with common fields
-  const templateParams: Record<string, unknown> = {
+  // Ensure all required fields are present and not undefined/null
+  const templateParams = {
     to_name: customerData.name,
     to_email: customerData.email,
     from_name: 'Felix Fix-It',
-    subject: 'Thank you for contacting Felix Fix-It',
+    from_email: 'felix@felixfixit.com',
     message: customerData.message,
     service_type: customerData.service || 'General inquiry',
     phone_number: customerData.phone,
     address: customerData.address,
     urgency: customerData.urgency || 'Not specified',
-    reply_to: 'felix@felixfixit.com',
-    // Always include preferred_date and preferred_time, even if empty
     preferred_date: customerData.preferredDate || 'Not specified',
-    preferred_time: customerData.preferredTime || 'Not specified'
+    preferred_time: customerData.preferredTime || 'Not specified',
+    reply_to: 'felix@felixfixit.com'
   };
   
-  console.log('EmailJS: Customer acknowledgment template prepared');
+  console.log('EmailJS: Customer acknowledgment template prepared with params:', templateParams);
   return await sendEmail(CUSTOMER_TEMPLATE_ID, templateParams);
 };
 
@@ -118,26 +116,25 @@ export const sendAdminNotification = async (submissionData: {
   preferredTime?: string;
 }) => {
   console.log('EmailJS: Preparing admin notification email...');
+  console.log('EmailJS: Admin submission data received:', submissionData);
   
-  // Initialize templateParams with common fields
-  const templateParams: Record<string, unknown> = {
+  // Ensure all required fields are present and not undefined/null
+  const templateParams = {
     to_name: 'Felix',
     to_email: 'felix@felixfixit.com', // Admin email
     from_name: submissionData.name,
     from_email: submissionData.email,
-    subject: `New ${submissionData.preferredDate ? 'Scheduling' : 'Quote'} Request from ${submissionData.name}`,
     phone_number: submissionData.phone,
     service_type: submissionData.service || 'General inquiry',
     urgency: submissionData.urgency || 'Not specified',
     message: submissionData.message,
     address: submissionData.address,
-    reply_to: submissionData.email,
-    // Always include preferred_date and preferred_time, even if empty
     preferred_date: submissionData.preferredDate || 'Not specified',
-    preferred_time: submissionData.preferredTime || 'Not specified'
+    preferred_time: submissionData.preferredTime || 'Not specified',
+    reply_to: submissionData.email
   };
   
-  console.log('EmailJS: Admin notification template prepared');
+  console.log('EmailJS: Admin notification template prepared with params:', templateParams);
   return await sendEmail(ADMIN_TEMPLATE_ID, templateParams);
 };
 
