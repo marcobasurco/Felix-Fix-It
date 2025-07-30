@@ -237,7 +237,7 @@ const ScheduleVisitPage = () => {
       message: formData.message,
       phone: formData.phone,
       address: `${formData.streetAddress}, ${formData.city}, ${formData.stateProvince} ${formData.zipCode}`,
-      urgency: formData.urgency,
+      urgency: formData.urgency || 'Not specified',
       preferredDate: selectedDateDisplay,
       preferredTime: new Date(`2000-01-01T${selectedTime}`).toLocaleTimeString('en-US', {
         hour: 'numeric',
