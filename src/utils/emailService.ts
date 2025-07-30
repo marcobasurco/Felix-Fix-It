@@ -96,16 +96,11 @@ export const sendCustomerAcknowledgment = async (customerData: {
     phone_number: customerData.phone,
     address: customerData.address,
     urgency: customerData.urgency || 'Not specified',
-    reply_to: 'felix@felixfixit.com'
+    reply_to: 'felix@felixfixit.com',
+    // Always include preferred_date and preferred_time, even if empty
+    preferred_date: customerData.preferredDate || 'Not specified',
+    preferred_time: customerData.preferredTime || 'Not specified'
   };
-  
-  // Conditionally add preferredDate and preferredTime if they exist
-  if (customerData.preferredDate) {
-    templateParams.preferred_date = customerData.preferredDate;
-  }
-  if (customerData.preferredTime) {
-    templateParams.preferred_time = customerData.preferredTime;
-  }
   
   console.log('EmailJS: Customer acknowledgment template prepared');
   return await sendEmail(CUSTOMER_TEMPLATE_ID, templateParams);
@@ -136,16 +131,11 @@ export const sendAdminNotification = async (submissionData: {
     urgency: submissionData.urgency || 'Not specified',
     message: submissionData.message,
     address: submissionData.address,
-    reply_to: submissionData.email
+    reply_to: submissionData.email,
+    // Always include preferred_date and preferred_time, even if empty
+    preferred_date: submissionData.preferredDate || 'Not specified',
+    preferred_time: submissionData.preferredTime || 'Not specified'
   };
-  
-  // Conditionally add preferredDate and preferredTime if they exist
-  if (submissionData.preferredDate) {
-    templateParams.preferred_date = submissionData.preferredDate;
-  }
-  if (submissionData.preferredTime) {
-    templateParams.preferred_time = submissionData.preferredTime;
-  }
   
   console.log('EmailJS: Admin notification template prepared');
   return await sendEmail(ADMIN_TEMPLATE_ID, templateParams);
