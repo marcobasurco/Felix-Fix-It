@@ -1,28 +1,10 @@
 import React from 'react';
 import { Wrench, Phone, Mail, MapPin, Clock, Star, Facebook, Instagram, Linkedin } from 'lucide-react';
+import { BUSINESS_INFO, SERVICE_AREAS, SERVICES } from '../config/constants';
 
 const FooterSection = () => {
   const currentYear = new Date().getFullYear();
 
-  const services = [
-    'Electrical Repairs',
-    'Plumbing Services',
-    'Painting & Drywall',
-    'Carpentry Work',
-    'Home Maintenance',
-    'Appliance Installation'
-  ];
-
-  const areas = [
-    'San Francisco',
-    'Oakland',
-    'San Jose',
-    'Palo Alto',
-    'Mountain View',
-    'Fremont',
-    'Berkeley',
-    'Hayward'
-  ];
 
   return (
     <footer className="bg-gradient-to-br from-gray-900 to-gray-800 text-white">
@@ -35,13 +17,13 @@ const FooterSection = () => {
                 <Wrench className="h-8 w-8 text-white" />
               </div>
               <div>
-                <h3 className="text-2xl font-bold">Felix Fix-It</h3>
-                <p className="text-sm text-gray-400">Bay Area's #1 Handyman</p>
+                <h3 className="text-2xl font-bold">{BUSINESS_INFO.name}</h3>
+                <p className="text-sm text-gray-400">{BUSINESS_INFO.tagline}</p>
               </div>
             </div>
             
             <p className="text-gray-300 mb-6 leading-relaxed">
-              Professional handyman services throughout the San Francisco Bay Area. 
+              Professional handyman services throughout the {BUSINESS_INFO.address}. 
               Licensed, insured, and committed to excellence since 2014.
             </p>
             
@@ -71,10 +53,10 @@ const FooterSection = () => {
           <div>
             <h4 className="text-lg font-bold mb-6">Our Services</h4>
             <ul className="space-y-3">
-              {services.map((service, index) => (
+              {SERVICES.map((service, index) => (
                 <li key={index}>
-                  <a href="#services" className="text-gray-300 hover:text-orange-400 transition-colors text-sm">
-                    {service}
+                  <a href="/#services" className="text-gray-300 hover:text-orange-400 transition-colors text-sm">
+                    {service.name}
                   </a>
                 </li>
               ))}
@@ -85,14 +67,14 @@ const FooterSection = () => {
           <div>
             <h4 className="text-lg font-bold mb-6">Service Areas</h4>
             <ul className="space-y-3">
-              {areas.map((area, index) => (
+              {SERVICE_AREAS.slice(0, 8).map((area, index) => (
                 <li key={index} className="text-gray-300 text-sm">
                   {area}
                 </li>
               ))}
             </ul>
             <p className="text-xs text-gray-400 mt-4">
-              + 50 more cities throughout the Bay Area
+              + {SERVICE_AREAS.length - 8} more cities throughout the Bay Area
             </p>
           </div>
 
@@ -103,8 +85,8 @@ const FooterSection = () => {
               <div className="flex items-center space-x-3">
                 <Phone className="h-5 w-5 text-orange-400" />
                 <div>
-                  <a href="tel:650-315-1390" className="text-gray-300 hover:text-white transition-colors">
-                    (650) 315-1390
+                  <a href={`tel:${BUSINESS_INFO.phone.replace(/\D/g, '')}`} className="text-gray-300 hover:text-white transition-colors">
+                    {BUSINESS_INFO.phone}
                   </a>
                   <p className="text-xs text-gray-400">24/7 Emergency Line</p>
                 </div>
@@ -113,8 +95,8 @@ const FooterSection = () => {
               <div className="flex items-center space-x-3">
                 <Mail className="h-5 w-5 text-orange-400" />
                 <div>
-                  <a href="mailto:felix@felixfixit.com" className="text-gray-300 hover:text-white transition-colors">
-                    felix@felixfixit.com
+                  <a href={`mailto:${BUSINESS_INFO.email}`} className="text-gray-300 hover:text-white transition-colors">
+                    {BUSINESS_INFO.email}
                   </a>
                   <p className="text-xs text-gray-400">Response within 2 hours</p>
                 </div>
@@ -123,16 +105,16 @@ const FooterSection = () => {
               <div className="flex items-center space-x-3">
                 <MapPin className="h-5 w-5 text-orange-400" />
                 <div>
-                  <span className="text-gray-300">San Francisco Bay Area</span>
-                  <p className="text-xs text-gray-400">50-mile service radius</p>
+                  <span className="text-gray-300">{BUSINESS_INFO.address}</span>
+                  <p className="text-xs text-gray-400">{BUSINESS_INFO.serviceRadius}</p>
                 </div>
               </div>
               
               <div className="flex items-center space-x-3">
                 <Clock className="h-5 w-5 text-orange-400" />
                 <div>
-                  <span className="text-gray-300">Mon-Fri: 7AM-7PM</span>
-                  <p className="text-xs text-gray-400">Sat: 8AM-5PM</p>
+                  <span className="text-gray-300">{BUSINESS_INFO.hours.weekdays}</span>
+                  <p className="text-xs text-gray-400">{BUSINESS_INFO.hours.saturday}</p>
                 </div>
               </div>
             </div>
@@ -143,7 +125,7 @@ const FooterSection = () => {
         <div className="border-t border-gray-700 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-gray-400 text-sm mb-4 md:mb-0">
-              © {currentYear} Felix Fix-It. All rights reserved.
+              © {currentYear} {BUSINESS_INFO.name}. All rights reserved.
             </div>
             <div className="flex flex-wrap justify-center md:justify-end space-x-6 text-sm text-gray-400">
               <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>

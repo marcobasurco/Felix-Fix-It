@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Lock, User, Eye, EyeOff } from 'lucide-react';
+import { BUSINESS_INFO } from '../config/constants';
 
 interface AdminLoginProps {
   onLogin: () => void;
@@ -20,7 +21,7 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
     setError('');
 
     // Simple authentication - in production, this should be server-side
-    if (credentials.username === 'felix' && credentials.password === 'fixit2024!') {
+    if (credentials.username === BUSINESS_INFO.admin.username && credentials.password === BUSINESS_INFO.admin.password) {
       setTimeout(() => {
         onLogin();
         setIsLoading(false);
@@ -115,8 +116,8 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
 
         <div className="mt-6 text-center text-sm text-gray-500">
           <p>Demo Credentials:</p>
-          <p>Username: <code className="bg-gray-100 px-2 py-1 rounded">felix</code></p>
-          <p>Password: <code className="bg-gray-100 px-2 py-1 rounded">fixit2024!</code></p>
+          <p>Username: <code className="bg-gray-100 px-2 py-1 rounded">{BUSINESS_INFO.admin.username}</code></p>
+          <p>Password: <code className="bg-gray-100 px-2 py-1 rounded">{BUSINESS_INFO.admin.password}</code></p>
         </div>
       </div>
     </div>

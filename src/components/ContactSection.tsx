@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Phone, Mail, MapPin, Clock, Send, MessageCircle, Calendar } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { BUSINESS_INFO } from '../config/constants';
 import { saveFormSubmission } from '../utils/storage';
 import { sendCustomerAcknowledgment, sendAdminNotification } from '../utils/emailService';
 
@@ -85,28 +87,44 @@ const ContactSection = () => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    const { name, value } = e.target;
+    
+    if (name === 'phone') {
+      // Format phone number as user types
+      let formattedValue = value.replace(/\D/g, ''); // Remove non-digits
+      if (formattedValue.length >= 6) {
+        formattedValue = `(${formattedValue.slice(0, 3)}) ${formattedValue.slice(3, 6)}-${formattedValue.slice(6, 10)}`;
+      } else if (formattedValue.length >= 3) {
+        formattedValue = `(${formattedValue.slice(0, 3)}) ${formattedValue.slice(3)}`;
+      }
+      setFormData(prev => ({
+        ...prev,
+        [name]: formattedValue
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
   };
 
   const contactMethods = [
     {
       icon: Phone,
       title: 'Call or Text',
-      info: '(650) 315-1390',
+      info: BUSINESS_INFO.phone,
       description: 'Available 24/7 for emergencies',
       color: 'from-green-500 to-emerald-500',
-      action: 'tel:650-315-1390'
+      action: `tel:${BUSINESS_INFO.phone.replace(/\D/g, '')}`
     },
     {
       icon: Mail,
       title: 'Email Us',
-      info: 'felix@felixfixit.com',
+      info: BUSINESS_INFO.email,
       description: 'Response within 2 hours',
       color: 'from-blue-500 to-cyan-500',
-      action: 'mailto:felix@felixfixit.com'
+      action: `mailto:${BUSINESS_INFO.email}`
     },
     {
       icon: MessageCircle,
@@ -122,7 +140,7 @@ const ContactSection = () => {
       info: 'Book Appointment',
       description: 'Choose your preferred date and time',
       color: 'from-indigo-500 to-blue-500',
-      action: '/schedule-visit'
+      action: '#'
     }
   ];
 
@@ -149,7 +167,43 @@ const ContactSection = () => {
           <div className="lg:col-span-5">
             <div className="space-y-6 mb-12">
               {contactMethods.map((method, index) => (
-                <a
+                {method.action.startsWith('#') ? (
+                  <Link
+                    key={index}
+                    to="/schedule-visit"
+                    className="block bg-gradient-to-r from-gray-50 to-blue-50 rounded-3xl p-6 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
+                  >
+                    <div className="flex items-center space-x-4">
+                      <div className={`bg-gradient-to-r ${method.color} p-4 rounded-2xl shadow-lg`}>
+                        <method.icon className="h-6 w-6 text-white" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-xl font-bold text-gray-900 mb-1">{method.title}</h3>
+                        <p className="text-lg text-gray-700 mb-1">{method.info}</p>
+                        <p className="text-sm text-gray-500">{method.description}</p>
+                      </div>
+                    </div>
+                  </Link>
+                ) : (
+                  <a
+                    key={index}
+                    href={method.action}
+                    className="block bg-gradient-to-r from-gray-50 to-blue-50 rounded-3xl p-6 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
+                  >
+                    <div className="flex items-center space-x-4">
+                      <div className={`bg-gradient-to-r ${method.color} p-4 rounded-2xl shadow-lg`}>
+                        <method.icon className="h-6 w-6 text-white" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-xl font-bold text-gray-900 mb-1">{method.title}</h3>
+                        <p className="text-lg text-gray-700 mb-1">{method.info}</p>
+                        <p className="text-sm text-gray-500">{method.description}</p>
+                      </div>
+                    </div>
+                  </a>
+                )}
+              ))}
+            </div>
                   key={index}
                   href={method.action}
                   className="block bg-gradient-to-r from-gray-50 to-blue-50 rounded-3xl p-6 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
@@ -176,20 +230,20 @@ const ContactSection = () => {
               </div>
               <div className="space-y-3">
                 <div className="flex justify-between items-center py-2 border-b border-gray-200">
-                  <span className="font-medium text-gray-700">Monday - Friday</span>
-                  <span className="text-gray-600">7:00 AM - 7:00 PM</span>
+                  <span className="font-medium text-gray-700">Weekdays</span>
+                  <span className="text-gray-600">{BUSINESS_INFO.hours.weekdays.split(': ')[1]}</span>
                 </div>
                 <div className="flex justify-between items-center py-2 border-b border-gray-200">
                   <span className="font-medium text-gray-700">Saturday</span>
-                  <span className="text-gray-600">8:00 AM - 5:00 PM</span>
+                  <span className="text-gray-600">{BUSINESS_INFO.hours.saturday.split(': ')[1]}</span>
                 </div>
                 <div className="flex justify-between items-center py-2 border-b border-gray-200">
                   <span className="font-medium text-gray-700">Sunday</span>
-                  <span className="text-gray-600">Emergency Only</span>
+                  <span className="text-gray-600">{BUSINESS_INFO.hours.sunday.split(': ')[1]}</span>
                 </div>
                 <div className="flex justify-between items-center py-2">
                   <span className="font-medium text-red-600">Emergency Service</span>
-                  <span className="text-red-600 font-medium">24/7 Available</span>
+                  <span className="text-red-600 font-medium">{BUSINESS_INFO.hours.emergency}</span>
                 </div>
               </div>
             </div>
@@ -201,7 +255,7 @@ const ContactSection = () => {
                 <h3 className="text-xl font-bold text-gray-900">Service Area</h3>
               </div>
               <p className="text-gray-600 mb-4">
-                Serving the entire San Francisco Bay Area within a 50-mile radius
+                Serving the entire {BUSINESS_INFO.address} within a {BUSINESS_INFO.serviceRadius}
               </p>
               <div className="grid grid-cols-2 gap-2 text-sm text-gray-600">
                 <div>• San Francisco</div>
@@ -433,7 +487,7 @@ const ContactSection = () => {
             We're available 24/7 for emergency repairs.
           </p>
           <a
-            href="tel:650-315-1390"
+            href={`tel:${BUSINESS_INFO.phone.replace(/\D/g, '')}`}
             className="bg-white text-red-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-colors inline-flex items-center space-x-2"
           >
             <Phone className="h-5 w-5" />

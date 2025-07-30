@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Phone, Wrench, Star } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { BUSINESS_INFO } from '../config/constants';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,17 +16,25 @@ const Navigation = () => {
   }, []);
 
   const navItems = [
-    { label: 'Home', href: '#home' },
-    { label: 'Services', href: '#services' },
-    { label: 'About', href: '#about' },
-    { label: 'Coverage', href: '#coverage' },
-    { label: 'Reviews', href: '#reviews' },
-    { label: 'Contact', href: '#contact' }
+    { label: 'Home', href: '/' },
+    { label: 'Services', href: '/#services' },
+    { label: 'About', href: '/#about' },
+    { label: 'Coverage', href: '/#coverage' },
+    { label: 'Reviews', href: '/#reviews' },
+    { label: 'Contact', href: '/#contact' }
   ];
 
-  const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
-    element?.scrollIntoView({ behavior: 'smooth' });
+  const handleNavigation = (href: string) => {
+    if (href.startsWith('/#')) {
+      // If we're on the home page, scroll to section
+      if (window.location.pathname === '/') {
+        const element = document.querySelector(href.substring(1));
+        element?.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        // If we're on another page, navigate to home page with hash
+        window.location.href = href;
+      }
+    }
     setIsOpen(false);
   };
 
@@ -46,16 +56,12 @@ const Navigation = () => {
             </div>
             <div>
               <h1 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                Felix Fix-It
+                {BUSINESS_INFO.name}
               </h1>
-              <p className="text-xs text-gray-600">Bay Area's #1 Handyman</p>
+              <p className="text-xs text-gray-600">{BUSINESS_INFO.tagline}</p>
             </div>
           </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-8">
-            {navItems.map((item) => (
-              <button
                 key={item.label}
                 onClick={() => scrollToSection(item.href)}
                 className="text-gray-700 hover:text-orange-600 font-medium transition-colors duration-200 relative group"
@@ -91,7 +97,32 @@ const Navigation = () => {
           <div className="lg:hidden absolute top-full left-0 right-0 bg-white shadow-xl border-t">
             <div className="px-4 py-6 space-y-4">
               {navItems.map((item) => (
-                <button
+                item.href.startsWith('/') && !item.href.startsWith('/#') ? (
+                  <Link
+                    key={item.label}
+                    to={item.href}
+                    onClick={() => setIsOpen(false)}
+                    className="block w-full text-left py-3 px-4 text-gray-700 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                ) : (
+                  <button
+                    key={item.label}
+                    onClick={() => handleNavigation(item.href)}
+                    className="block w-full text-left py-3 px-4 text-gray-700 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition-colors"
+                  >
+                    {item.label}
+                  </button>
+                )
+              ))}
+              <a
+                href={`tel:${BUSINESS_INFO.phone.replace(/\D/g, '')}`}
+                className="block w-full bg-gradient-to-r from-orange-500 to-red-500 text-white text-center py-3 px-4 rounded-lg font-semibold"
+              >
+                Call {BUSINESS_INFO.phone}
+              item.href.startsWith('/') && !item.href.startsWith('/#') ? (
+            </div>
                   key={item.label}
                   onClick={() => scrollToSection(item.href)}
                   className="block w-full text-left py-3 px-4 text-gray-700 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition-colors"
@@ -104,7 +135,7 @@ const Navigation = () => {
                 className="block w-full bg-gradient-to-r from-orange-500 to-red-500 text-white text-center py-3 px-4 rounded-lg font-semibold"
               >
                 Call (650) 315-1390
-              </a>
+              )
             </div>
           </div>
         )}

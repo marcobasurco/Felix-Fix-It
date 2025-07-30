@@ -4,6 +4,7 @@ const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
 const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 const CUSTOMER_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_CUSTOMER_TEMPLATE_ID;
 const ADMIN_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_ADMIN_TEMPLATE_ID;
+const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL || 'felix@felixfixit.com';
 
 console.log('EmailJS Environment Variables Check:');
 console.log('- SERVICE_ID:', SERVICE_ID ? '✓ Defined' : '✗ Missing');
@@ -121,7 +122,7 @@ export const sendAdminNotification = async (submissionData: {
   // Ensure all required fields are present and not undefined/null
   const templateParams = {
     to_name: 'Felix',
-    to_email: 'felix@felixfixit.com', // Admin email
+    to_email: ADMIN_EMAIL,
     from_name: submissionData.name,
     from_email: submissionData.email,
     phone_number: submissionData.phone,

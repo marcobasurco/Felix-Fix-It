@@ -1,13 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navigation from './components/Navigation';
+import Layout from './components/Layout';
 import HeroSection from './components/HeroSection';
 import ServicesGrid from './components/ServicesGrid';
 import AboutSection from './components/AboutSection';
 import CoverageMap from './components/CoverageMap';
 import ReviewsSection from './components/ReviewsSection';
 import ContactSection from './components/ContactSection';
-import FooterSection from './components/FooterSection';
 import ScheduleVisitPage from './components/ScheduleVisitPage';
 import AdminPanel from './components/AdminPanel';
 import ElectricalWorkPage from './components/ElectricalWorkPage';
@@ -22,26 +21,50 @@ function App() {
     <Router>
       <Routes>
         <Route path="/admin" element={<AdminPanel />} />
-        <Route path="/schedule-visit" element={<ScheduleVisitPage />} />
-        <Route path="/electrical-work" element={<ElectricalWorkPage />} />
-        <Route path="/plumbing-services" element={<PlumbingServicesPage />} />
-        <Route path="/painting-drywall" element={<PaintingDrywallPage />} />
-        <Route path="/carpentry" element={<CarpentryPage />} />
-        <Route path="/home-maintenance" element={<HomeMaintenancePage />} />
-        <Route path="/appliance-installation" element={<ApplianceInstallationPage />} />
+        <Route path="/schedule-visit" element={
+          <Layout>
+            <ScheduleVisitPage />
+          </Layout>
+        } />
+        <Route path="/electrical-work" element={
+          <Layout>
+            <ElectricalWorkPage />
+          </Layout>
+        } />
+        <Route path="/plumbing-services" element={
+          <Layout>
+            <PlumbingServicesPage />
+          </Layout>
+        } />
+        <Route path="/painting-drywall" element={
+          <Layout>
+            <PaintingDrywallPage />
+          </Layout>
+        } />
+        <Route path="/carpentry" element={
+          <Layout>
+            <CarpentryPage />
+          </Layout>
+        } />
+        <Route path="/home-maintenance" element={
+          <Layout>
+            <HomeMaintenancePage />
+          </Layout>
+        } />
+        <Route path="/appliance-installation" element={
+          <Layout>
+            <ApplianceInstallationPage />
+          </Layout>
+        } />
         <Route path="/" element={
-          <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-            <Navigation />
-            <main className="overflow-hidden">
-              <HeroSection />
-              <ServicesGrid />
-              <AboutSection />
-              <CoverageMap />
-              <ReviewsSection />
-              <ContactSection />
-            </main>
-            <FooterSection />
-          </div>
+          <Layout>
+            <HeroSection />
+            <ServicesGrid />
+            <AboutSection />
+            <CoverageMap />
+            <ReviewsSection />
+            <ContactSection />
+          </Layout>
         } />
       </Routes>
     </Router>
