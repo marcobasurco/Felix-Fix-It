@@ -238,12 +238,12 @@ const ScheduleVisitPage = () => {
       phone: formData.phone,
       address: `${formData.streetAddress}, ${formData.city}, ${formData.stateProvince} ${formData.zipCode}`,
       urgency: formData.urgency,
-      preferredDate: selectedDateDisplay,
-      preferredTime: new Date(`2000-01-01T${selectedTime}`).toLocaleTimeString('en-US', {
+      preferredDate: selectedDateDisplay || 'Not specified',
+      preferredTime: selectedTime ? new Date(`2000-01-01T${selectedTime}`).toLocaleTimeString('en-US', {
         hour: 'numeric',
         minute: '2-digit',
         hour12: true
-      })
+      }) : 'Not specified'
     };
     
     try {
