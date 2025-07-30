@@ -57,15 +57,12 @@ export const sendEmail = async (templateId: string, templateParams: Record<strin
     console.error('EmailJS: ❌ Failed to send email');
     console.error('EmailJS: Error details:', error);
     
-    // Provide more specific error information
     if (error instanceof Error) {
       console.error('EmailJS: Error message:', error.message);
       console.error('EmailJS: Error stack:', error.stack);
     }
     
-    // Log the exact parameters that caused the error
     console.error('EmailJS: Parameters that caused the error:', JSON.stringify(templateParams, null, 2));
-    
     throw error;
   }
 };
@@ -84,7 +81,6 @@ export const sendCustomerAcknowledgment = async (customerData: {
   console.log('EmailJS: Preparing customer acknowledgment email...');
   console.log('EmailJS: Customer data received:', customerData);
   
-  // Ensure all required fields are present and not undefined/null
   const templateParams = {
     to_name: customerData.name,
     to_email: customerData.email,
@@ -118,20 +114,19 @@ export const sendAdminNotification = async (submissionData: {
   console.log('EmailJS: Preparing admin notification email...');
   console.log('EmailJS: Admin submission data received:', submissionData);
   
-  // Ensure all required fields are present and not undefined/null
-const templateParams = {
-  to_name: customerData.name,
-  to_email: customerData.email,
-  from_name: 'Felix Fix-It',
-  from_email: 'felix@felixfixit.com',
-  message: customerData.message,
-  service_type: customerData.service || 'General inquiry',
-  phone_number: customerData.phone,
-  address: customerData.address,
-  urgency: customerData.urgency || 'Not specified',
-  preferred_date: customerData.preferredDate || '',  // <-- fixed
-  preferred_time: customerData.preferredTime || '',  // <-- fixed
-  reply_to: 'felix@felixfixit.com'
+  const templateParams = {
+    to_name: 'Felix',
+    to_email: 'felix@felixfixit.com',
+    from_name: submissionData.name,
+    from_email: submissionData.email,
+    message: submissionData.message,
+    service_type: submissionData.service || 'General inquiry',
+    phone_number: submissionData.phone,
+    address: submissionData.address,
+    urgency: submissionData.urgency || 'Not specified',
+    preferred_date: submissionData.preferredDate || '',
+    preferred_time: submissionData.preferredTime || '',
+    reply_to: submissionData.email
   };
   
   console.log('EmailJS: Admin notification template prepared with params:', templateParams);
