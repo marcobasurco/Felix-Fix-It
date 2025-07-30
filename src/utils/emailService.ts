@@ -119,19 +119,19 @@ export const sendAdminNotification = async (submissionData: {
   console.log('EmailJS: Admin submission data received:', submissionData);
   
   // Ensure all required fields are present and not undefined/null
-  const templateParams = {
-    to_name: 'Felix',
-    to_email: 'felix@felixfixit.com', // Admin email
-    from_name: submissionData.name,
-    from_email: submissionData.email,
-    phone_number: submissionData.phone,
-    service_type: submissionData.service || 'General inquiry',
-    urgency: submissionData.urgency || 'Not specified',
-    message: submissionData.message,
-    address: submissionData.address,
-    preferred_date: submissionData.preferredDate || 'Not specified',
-    preferred_time: submissionData.preferredTime || 'Not specified',
-    reply_to: submissionData.email
+const templateParams = {
+  to_name: customerData.name,
+  to_email: customerData.email,
+  from_name: 'Felix Fix-It',
+  from_email: 'felix@felixfixit.com',
+  message: customerData.message,
+  service_type: customerData.service || 'General inquiry',
+  phone_number: customerData.phone,
+  address: customerData.address,
+  urgency: customerData.urgency || 'Not specified',
+  preferred_date: customerData.preferredDate || '',  // <-- fixed
+  preferred_time: customerData.preferredTime || '',  // <-- fixed
+  reply_to: 'felix@felixfixit.com'
   };
   
   console.log('EmailJS: Admin notification template prepared with params:', templateParams);
